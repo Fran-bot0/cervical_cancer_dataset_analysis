@@ -4,7 +4,13 @@ This is a project made for a R course in data analysis. It analyses [this datase
 The script performs some data manipulation and produces two figures.
 
 # Requirements
+* Boruta
 * dplyr
 * ggplot2
 * gridExtra
 * RColorBrewer
+
+# Questions
+* Which are the most important factors associated with cervical cancer?
+* What is the relationship between certain contraceptives and the risk of cervical cancer?
+* What is the relationship between having a previous history of STDs and the risk of cervical cancer?
