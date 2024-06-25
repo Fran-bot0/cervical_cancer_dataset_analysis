@@ -1,6 +1,7 @@
 # Project for R Course
 # Cervical cancer impact factors
 
+library(Boruta)
 library(dplyr)
 library(ggplot2)
 library(gridExtra)
@@ -74,6 +75,42 @@ raw_data <- mutate(raw_data,
                                                 raw_data$Citology == 0 & 
                                                 raw_data$Biopsy == 0,
                                               0, 1))
+
+#### Boruta analysis ####
+# Boruta analysis to check which factors are most important.
+features <- select(raw_data,
+                   age = 'Age',
+                   nr_pregnancies = 'Num.of.pregnancies',
+                   first_sex_intercourse = 'First.sexual.intercourse',
+                   nr_sexual_partners = 'Number.of.sexual.partners',
+                   smokes = 'Smokes',
+                   std_molluscum_contagiosum = 'STDs.molluscum.contagiosum',
+                   cerv_intra_neoplasia = 'Dx.CIN',
+                   std_genital_herpes = 'STDs.genital.herpes',
+                   std_hepatitis_b = 'STDs.Hepatitis.B',
+                   std_cervical_condylomatosis= 'STDs.cervical.condylomatosis',
+                   hpv = 'STDs.HPV',
+                   std_vaginal_condylomatosis = 'STDs.vaginal.condylomatosis',
+                   std_pelv_infl_desiese = 'STDs.pelvic.inflammatory.disease',
+                   std_aids = 'STDs.AIDS',
+                   std_nr = 'STDs..number.',
+                   std_hiv = 'STDs.HIV',
+                   std_syphilis = 'STDs.syphilis',
+                   iud = 'IUD',
+                   iud_years = 'IUD..years.',
+                   hormonal_contr_years = 'Hormonal.Contraceptives..years.',
+                   hormonal_contr = 'Hormonal.Contraceptives',
+                   cancer_diagnosis)
+
+#Replacing all instances of NA with -1
+features[is.na(features)] <- -1
+
+# Running the boruta analysis
+set.seed(1407)
+boruta_analysis = Boruta(cancer_diagnosis ~ ., data = features, maxRuns=200)
+
+# Checking boruta analysis final decision
+as.data.frame(boruta_analysis$finalDecision)
 
 
 #### Figure Contraceptives ####
